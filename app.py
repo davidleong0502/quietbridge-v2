@@ -104,43 +104,77 @@ st.set_page_config(page_title="QuietBridge", layout="centered")
 st.markdown(
     """
 <style>
-/* Pastel blue background for the whole app */
+/* ---------- Theme tokens (default = light) ---------- */
+:root{
+  --qb-bg: #EAF4FF;
+  --qb-text: #111111;
+  --qb-muted: rgba(17,17,17,0.70);
+  --qb-sidebar: rgba(255,255,255,0.55);
+  --qb-button-radius: 14px;
+}
+
+/* ---------- If OS is dark mode ---------- */
+@media (prefers-color-scheme: dark) {
+  :root{
+    --qb-bg: #0b1220;
+    --qb-text: #f5f5f5;
+    --qb-muted: rgba(245,245,245,0.72);
+    --qb-sidebar: rgba(15, 23, 42, 0.70);
+  }
+}
+
+/* ---------- Apply background + text ---------- */
 .stApp {
-    background: #EAF4FF;   /* pastel blue */
+  background: var(--qb-bg) !important;
 }
 
-/* Make content feel less stretched on big screens */
+html, body, .stApp, [data-testid="stAppViewContainer"]{
+  color: var(--qb-text) !important;
+}
+
+/* Layout */
 .block-container {
-    max-width: 720px;
-    padding-top: 2rem;
+  max-width: 720px;
+  padding-top: 2rem;
 }
 
-/* Center the main page title ("QuietBridge") */
+/* Headings */
 h1 {
-    text-align: center;
-    margin-bottom: 0.25rem;
+  text-align: center;
+  margin-bottom: 0.25rem;
+  color: var(--qb-text) !important;
 }
 
-/* Center common headings */
 h2, h3 {
-    text-align: center;
+  text-align: center;
+  color: var(--qb-text) !important;
 }
 
-/* Center captions + normal text blocks you write with st.caption/st.write */
+/* Body text */
 [data-testid="stCaptionContainer"],
 [data-testid="stMarkdownContainer"] p {
-    text-align: center;
+  text-align: center;
+  color: var(--qb-text);
+  opacity: 0.92;
 }
 
-/* Sidebar: slightly translucent to feel softer */
+/* Sidebar */
 section[data-testid="stSidebar"] {
-    background: rgba(255, 255, 255, 0.55);
-    backdrop-filter: blur(8px);
+  background: var(--qb-sidebar) !important;
+  backdrop-filter: blur(8px);
+}
+section[data-testid="stSidebar"] *{
+  color: var(--qb-text) !important;
 }
 
-/* Buttons: rounded, soft */
+/* Buttons */
 div.stButton > button {
-    border-radius: 14px;
+  border-radius: var(--qb-button-radius);
+}
+
+/* Muted text */
+small, .stCaption {
+  color: var(--qb-muted) !important;
 }
 </style>
 """,
@@ -155,7 +189,6 @@ def display_name(user: str) -> str:
     trophies = int(w.get("trophies", 0))
 
     return f"{user} (Rep {rep} · 🏆 {trophies})"
-
 
 
 
