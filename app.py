@@ -239,7 +239,6 @@ if st.session_state.pending_nav in PAGES:
 # 3) Keyed widget remembers selection across reruns
 page = st.sidebar.radio("Navigate", PAGES, key="nav")
 w = get_user_wallet(st.session_state.wallets, st.session_state.name)
-w = get_user_wallet(st.session_state.wallets, st.session_state.name)
 st.sidebar.markdown("---")
 st.sidebar.write(f"🪙 Coins: **{w['coins']}**")
 today_iso = time.strftime("%Y-%m-%d")
