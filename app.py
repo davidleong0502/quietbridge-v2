@@ -250,8 +250,8 @@ if page == "🏠 Home":
 
 
     def pick_word(word: str):
-    st.session_state.selected_word = word
-    st.session_state.selected_mode = word  # use the word directly
+        st.session_state.selected_word = word
+        st.session_state.selected_mode = word  # use the word directly
 
     mood_grid = [
         ["Excited", "Joyful", "Motivated", "Inspired"],
