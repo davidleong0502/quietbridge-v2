@@ -338,7 +338,7 @@ if page == "🏠 Home":
             # !!!!!!!!
             # keep your existing behavior
             st.session_state.moods.append({
-    "mood": st.session_state.selected_word,
+    "mood": st.session_state.selected_mode,
     "timestamp": time.time()
 })
 
