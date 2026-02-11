@@ -178,15 +178,15 @@ def _render_score(wallets, a: str, b: str, display_name_fn):
         st.write("🟡 Token")
 
 def _other(match: dict, me: str) -> str | None:
-    """
-    Return the other player's name from a match dict.
-    Tries a few common key layouts so the app doesn't break if match shape changes.
-    """
     if not isinstance(match, dict):
         return None
 
-    # Common layouts
-    if "players" in match and isinstance(match["players"], (list, tuple)) and len(match["players"]) >= 2:
+    # Your actual match layout
+    if "a" in match and "b" in match:
+        p1, p2 = match.get("a"), match.get("b")
+
+    # Other fallback layouts (optional)
+    elif "players" in match and isinstance(match["players"], (list, tuple)) and len(match["players"]) >= 2:
         p1, p2 = match["players"][0], match["players"][1]
     elif "p1" in match and "p2" in match:
         p1, p2 = match.get("p1"), match.get("p2")
@@ -200,8 +200,6 @@ def _other(match: dict, me: str) -> str | None:
     if me == p2:
         return p1
     return None
-
-        
 
 def render_connect4_page(SHARED: dict, me: str, display_name_fn):
     _ensure_game_keys(SHARED)
@@ -284,16 +282,15 @@ def render_connect4_page(SHARED: dict, me: str, display_name_fn):
     # Game state
     game = SHARED["games"].get(match_id)
     if not game:
-        # recreate safely
-      SHARED["games"][match_id] = {
-          "board": _init_board(),
-          "turn": a,
-          "winner": None,
-          "scored": False,
-          "moves": 0,
-          "created": time.time(),
-          "last_action": time.time(),   # NEW
-      }
+        SHARED["games"][match_id] = {
+            "board": _init_board(),
+            "turn": a,
+            "winner": None,
+            "scored": False,
+            "moves": 0,
+            "created": time.time(),
+            "last_action": time.time(),
+        }
 
     game = SHARED["games"][match_id]
 
@@ -302,10 +299,6 @@ def render_connect4_page(SHARED: dict, me: str, display_name_fn):
     # AFK TIMER (turn-based)
     # -------------------------
     now = time.time()
-
-    # periodically rerun for AFK detection while game is active
-    if game["winner"] is None:
-        _auto_rerun_every(AUTO_RERUN_EVERY)
 
     if game["winner"] is None:
         elapsed = now - float(game.get("last_action", now))
