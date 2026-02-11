@@ -179,13 +179,14 @@ def renderstreak_card(checkins: list[dict]):
     st.markdown("""
     <style>
     .qb-card{
-      background: rgba(255,255,255,0.92);
+      background: var(--qb-card-bg);
       border-radius: 18px;
       padding: 18px 18px 14px 18px;
-      box-shadow: 0 8px 24px rgba(15, 30, 60, 0.10);
-      border: 1px solid rgba(10,30,60,0.08);
+      box-shadow: 0 8px 24px var(--qb-card-shadow);
+      border: 1px solid var(--qb-card-border);
       margin: 14px 0 18px 0;
     }
+
     .qb-title{
       font-size: 1.05rem;
       font-weight: 700;
@@ -200,17 +201,19 @@ def renderstreak_card(checkins: list[dict]):
       gap:10px;
       justify-content:space-between;
     }
+
     .qb-pill{
       display:inline-flex;
       align-items:center;
       gap:8px;
       padding: 8px 12px;
       border-radius: 999px;
-      background: rgba(234,244,255,0.9);
-      border: 1px solid rgba(10,30,60,0.08);
+      background: var(--qb-pill-bg);
+      border: 1px solid var(--qb-pill-border);
       font-size: 0.9rem;
       white-space: nowrap;
     }
+
     .qb-pill .dot{
       width:10px;height:10px;border-radius:50%;
       display:inline-block;
@@ -219,11 +222,12 @@ def renderstreak_card(checkins: list[dict]):
     .qb-badge{
       flex: 1 1 140px;
       min-width: 140px;
-      background: rgba(255,255,255,0.95);
-      border: 1px solid rgba(10,30,60,0.08);
+      background: var(--qb-card-bg);
+      border: 1px solid var(--qb-card-border);
       border-radius: 14px;
       padding: 12px;
     }
+
     .qb-badge .big{
       font-size: 1.1rem;
       font-weight: 800;
@@ -236,11 +240,12 @@ def renderstreak_card(checkins: list[dict]):
 
     .qb-progress-wrap{
       margin-top: 12px;
-      background: rgba(234,244,255,0.7);
-      border: 1px solid rgba(10,30,60,0.08);
+      background: var(--qb-pill-bg);
+      border: 1px solid var(--qb-pill-border);
       border-radius: 14px;
       padding: 12px;
     }
+
     .qb-mini{ font-size: 0.85rem; opacity: 0.85; }
 
     .qb-progress-bar{
