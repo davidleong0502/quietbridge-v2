@@ -9,7 +9,7 @@ from wallet import get_user_wallet, save_wallets
 ROWS, COLS = 6, 7
 AFK_SECONDS = 60
 AUTO_RERUN_EVERY = 2  # seconds
-LOBBY_TTL_SECONDS = 10  # consider 30–60; 30 feels responsive
+LOBBY_TTL_SECONDS = 30  # consider 30–60; 30 feels responsive
 
 
 EMPTY, P1, P2 = 0, 1, 2
