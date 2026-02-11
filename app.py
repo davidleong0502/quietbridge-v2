@@ -442,7 +442,8 @@ if page == "🏠 Home":
         # ------------------
         # Streak card
         # ------------------
-        renderstreak_card(st.session_state.checkins)
+        renderstreak_card(st.session_state.checkins, st.session_state.moods)
+
 
         # ------------------
         # Streak settings
