@@ -1,5 +1,20 @@
 def mood_to_num(mood: str) -> int:
-    mapping = {"Good": 4, "Okay": 3, "Lonely": 2, "Overwhelmed": 1}
+    mapping = {
+        # Row 1 (highest)
+        "Excited": 4, "Joyful": 4, "Motivated": 4, "Inspired": 4,
+
+        # Row 2
+        "Alert": 3, "Engaged": 3, "Proud": 3, "Tense": 2,
+
+        # Row 3
+        "Content": 3, "Peaceful": 3, "Calm": 2, "Sad": 1,
+
+        # Row 4 (lowest)
+        "Restful": 2, "Serene": 2, "Tired": 1, "Drained": 1,
+
+        # (keep old categories if you still use them anywhere)
+        "Good": 4, "Okay": 3, "Lonely": 2, "Overwhelmed": 1,
+    }
     return mapping.get(mood, 3)
 
 
