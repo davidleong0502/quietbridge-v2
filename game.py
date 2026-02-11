@@ -7,6 +7,8 @@ from wallet import get_user_wallet, save_wallets
 ROWS, COLS = 6, 7
 AFK_SECONDS = 60
 AUTO_RERUN_EVERY = 2  # seconds
+LOBBY_TTL_SECONDS = 30  # consider 30–60; 30 feels responsive
+
 
 EMPTY, P1, P2 = 0, 1, 2
 
@@ -14,7 +16,7 @@ EMPTY, P1, P2 = 0, 1, 2
 TOK = {EMPTY: "⚪", P1: "🔴", P2: "🟡"}
 
 def _ensure_game_keys(SHARED: dict):
-    SHARED.setdefault("lobby", [])
+    SHARED.setdefault("lobby", {})          # user -> last_seen_ts
     SHARED.setdefault("matches", [])        # {id,a,b,time}
     SHARED.setdefault("match_of", {})       # user -> match_id
     SHARED.setdefault("games", {})          # match_id -> game_state
@@ -28,20 +30,20 @@ def _get_match(SHARED: dict, match_id: str):
             return m
     return None
 
-def _other(match: dict, me: str) -> str:
-    return match["b"] if match["a"] == me else match["a"]
-
 def _in_lobby(SHARED: dict, user: str) -> bool:
     return user in SHARED["lobby"]
 
+def _touch_lobby(SHARED: dict, user: str):
+    # heartbeat (mark user as online "now")
+    SHARED["lobby"][user] = time.time()
+
 def _join_lobby(SHARED: dict, user: str):
-    if user not in SHARED["lobby"]:
-        SHARED["lobby"].append(user)
+    _touch_lobby(SHARED, user)
 
 def _leave_lobby(SHARED: dict, user: str):
-    if user in SHARED["lobby"]:
-        SHARED["lobby"].remove(user)
+    SHARED["lobby"].pop(user, None)
     SHARED["match_of"].pop(user, None)
+
 
 def _init_board():
     return [[EMPTY for _ in range(COLS)] for _ in range(ROWS)]
@@ -64,18 +66,26 @@ def _make_match(SHARED: dict, a: str, b: str) -> str:
     return match_id
 
 def _try_matchmake(SHARED: dict):
-    free = [u for u in SHARED["lobby"] if u not in SHARED["match_of"]]
+    free = [u for u in SHARED["lobby"].keys() if u not in SHARED["match_of"]]
     random.shuffle(free)
     while len(free) >= 2:
         a = free.pop()
         b = free.pop()
         _make_match(SHARED, a, b)
 
-def _cleanup_stale(SHARED: dict):
-    lobby_set = set(SHARED["lobby"])
-    stale_users = [u for u in list(SHARED["match_of"].keys()) if u not in lobby_set]
-    for u in stale_users:
-        SHARED["match_of"].pop(u, None)
+def _prune_lobby(SHARED: dict):
+    now = time.time()
+    lobby = SHARED["lobby"]
+
+    # remove people not seen recently
+    for u, last_seen in list(lobby.items()):
+        if now - float(last_seen) > LOBBY_TTL_SECONDS:
+            del lobby[u]
+
+    # also clean match_of entries for users who are no longer in lobby
+    for u in list(SHARED["match_of"].keys()):
+        if u not in lobby:
+            SHARED["match_of"].pop(u, None)
 
 def _render_lamps(n: int):
     max_icons = 30
@@ -183,7 +193,13 @@ def _auto_rerun_every(seconds: int):
 
 def render_connect4_page(SHARED: dict, me: str, display_name_fn):
     _ensure_game_keys(SHARED)
-    _cleanup_stale(SHARED)
+    _prune_lobby(SHARED)
+    
+    # If I'm in lobby, refresh my heartbeat
+    if _in_lobby(SHARED, me):
+        _touch_lobby(SHARED, me)
+        _auto_rerun_every(AUTO_RERUN_EVERY)
+
 
     st.subheader("Connect Four")
     st.caption("Join the lobby to be matched. Winner +10 🏆, loser −4 🏆.")
@@ -203,15 +219,18 @@ def render_connect4_page(SHARED: dict, me: str, display_name_fn):
     st.divider()
 
     # Lobby display
-    n = len(SHARED["lobby"])
+    online = sorted(SHARED["lobby"].keys())
+    n = len(online)
+    
     st.markdown("### Players online")
     st.markdown(f"## **{n}** in lobby")
     _render_lamps(n)
-
-    if SHARED["lobby"]:
+    
+    if online:
         with st.expander("See who’s in the lobby", expanded=False):
-            for u in SHARED["lobby"]:
+            for u in online:
                 st.write(f"• {display_name_fn(u)}")
+
 
     st.divider()
 
