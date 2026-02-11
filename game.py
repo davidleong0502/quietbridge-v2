@@ -176,6 +176,31 @@ def _render_score(wallets, a: str, b: str, display_name_fn):
         st.markdown(f"**{display_name_fn(b)}**")
         st.write(f"🏆 Trophies: **{tb}**")
         st.write("🟡 Token")
+
+def _other(match: dict, me: str) -> str | None:
+    """
+    Return the other player's name from a match dict.
+    Tries a few common key layouts so the app doesn't break if match shape changes.
+    """
+    if not isinstance(match, dict):
+        return None
+
+    # Common layouts
+    if "players" in match and isinstance(match["players"], (list, tuple)) and len(match["players"]) >= 2:
+        p1, p2 = match["players"][0], match["players"][1]
+    elif "p1" in match and "p2" in match:
+        p1, p2 = match.get("p1"), match.get("p2")
+    elif "player1" in match and "player2" in match:
+        p1, p2 = match.get("player1"), match.get("player2")
+    else:
+        return None
+
+    if me == p1:
+        return p2
+    if me == p2:
+        return p1
+    return None
+
         
 
 def render_connect4_page(SHARED: dict, me: str, display_name_fn):
