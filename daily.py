@@ -1,7 +1,10 @@
 
 import json
 from pathlib import Path
-from datetime import date, timedelta
+from datetime import date, timedelta, datetime
+from zoneinfo import ZoneInfo
+
+
 
 import pandas as pd
 import altair as alt
@@ -171,8 +174,37 @@ def calendar_heatmap(checkins: list[dict], weeks: int = 16):
 
     st.altair_chart(chart, use_container_width=True)
 
-def renderstreak_card(checkins: list[dict]):
 
+def avg_mood_level_7d_from_moods(moods: list) -> float | None:
+    """
+    Average mood level over last 7 days using *moods history* (counts repeats).
+    moods supports:
+      - list[dict] with {"mood": str, "timestamp": float}
+      - list[str] (no timestamps) -> cannot do 7d filter reliably
+    """
+    if not moods:
+        return None
+
+    # only dict entries with timestamps can be filtered by last 7 days
+    now = datetime.now(tz=ZoneInfo("Asia/Singapore"))
+    cutoff = now.timestamp() - (6 * 24 * 60 * 60)  # last 7 days incl today
+
+    vals = []
+    for e in moods:
+        if isinstance(e, dict):
+            m = e.get("mood")
+            ts = e.get("timestamp")
+            if m is not None and ts is not None and ts >= cutoff:
+                vals.append(mood_to_num(m))
+        # if it's a string, we skip (no timestamp => can't do last-7-days correctly)
+
+    if not vals:
+        return None
+
+    return sum(vals) / len(vals)
+
+
+def renderstreak_card(checkins: list[dict], moods: list | None = None):
     # ==============================
     # STREAK CARD CSS (REQUIRED)
     # ==============================
@@ -289,7 +321,12 @@ def renderstreak_card(checkins: list[dict]):
 
     streaks = compute_streaks(checkins, grace_days=grace)
     wk, goal = week_progress(checkins, goal=5)
+
     stats = mood_stats_7d(checkins)
+
+    avg_from_moods = avg_mood_level_7d_from_moods(moods) if moods else None
+    avg_level = avg_from_moods if avg_from_moods is not None else stats["avg_level"]
+
 
     today_iso = date.today().isoformat()
     checked_today = any(c.get("date") == today_iso for c in checkins)
@@ -303,7 +340,8 @@ def renderstreak_card(checkins: list[dict]):
 
     pct = 0 if goal <= 0 else min(100, int((wk / goal) * 100))
 
-    avg = "-" if stats["avg_level"] is None else f"{stats['avg_level']:.2f}"
+    avg = "-" if avg_level is None else f"{avg_level:.2f}"
+
     top_word = stats["top_word"]
 
     if streaks["current"] >= 7:
