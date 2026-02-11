@@ -1,6 +1,8 @@
 import time
 import random
 import streamlit as st
+from streamlit_autorefresh import st_autorefresh
+
 
 from wallet import get_user_wallet, save_wallets
 
