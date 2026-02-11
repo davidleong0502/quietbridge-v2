@@ -338,9 +338,10 @@ if page == "🏠 Home":
             # !!!!!!!!
             # keep your existing behavior
             st.session_state.moods.append({
-    "mood": st.session_state.selected_mode,  # backend category
+    "mood": st.session_state.selected_word,
     "timestamp": time.time()
 })
+
 
             st.session_state.last_mood = st.session_state.selected_mode
             st.session_state.mood_words.append(st.session_state.selected_word)
@@ -353,12 +354,6 @@ if page == "🏠 Home":
             )
             save_checkins(st.session_state.checkins)
             st.toast("Check-in saved. Proud of you.", icon="✅")
-            st.session_state.checkins = upsert_today_checkin(
-                st.session_state.checkins,
-                word=st.session_state.selected_word,
-                mode=st.session_state.selected_mode,
-            )
-            save_checkins(st.session_state.checkins)
 
             earned = maybe_award_daily_coins(
                 st.session_state.wallets,
