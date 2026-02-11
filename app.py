@@ -249,10 +249,9 @@ if page == "🏠 Home":
     st.caption("Tap a word. First instinct is fine.")
 
 
-
-    def pick_word(word: str):
-        st.session_state.selected_word = word
-        st.session_state.selected_mode = word_to_mode(word)
+   def pick_word(word: str):
+    st.session_state.selected_word = word
+    st.session_state.selected_mode = word  # use the word directly
 
     mood_grid = [
         ["Excited", "Joyful", "Motivated", "Inspired"],
