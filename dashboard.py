@@ -79,7 +79,7 @@ def render_dashboard(moods: list, chat_count: int, checkins: list[dict]):
         if m is None:
             continue
         if ts is not None:
-            sgt = ZoneInfo("Asia/Singapore")
+            sgt = datetime.timezone(datetime.timedelta(hours=8))
             t = datetime.datetime.fromtimestamp(ts, tz=sgt).strftime("%B %d, %Y at %I:%M %p")
             st.write(f"**{m}** — {t}")
         else:
