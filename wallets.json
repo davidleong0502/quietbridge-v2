@@ -1,0 +1,97 @@
+{
+  "QuietOcean": {
+    "coins": 1,
+    "helper_score": 0,
+    "last_award_date": "2026-02-11"
+  },
+  "QuietLantern": {
+    "coins": 1,
+    "helper_score": 0,
+    "last_award_date": "2026-02-11"
+  },
+  "GentleLantern": {
+    "coins": 0,
+    "helper_score": 3,
+    "last_award_date": null
+  },
+  "GentleCloud": {
+    "coins": 1,
+    "reputation": 1,
+    "last_award_date": "2026-02-11"
+  },
+  "HappyRiver": {
+    "coins": 1,
+    "reputation": 1,
+    "last_award_date": "2026-02-11"
+  },
+  "WarmLantern": {
+    "coins": 13,
+    "reputation": 0,
+    "last_award_date": "2026-02-11"
+  },
+  "QuietCloud": {
+    "coins": 13,
+    "reputation": 0,
+    "last_award_date": "2026-02-11"
+  },
+  "WarmOcean": {
+    "coins": 13,
+    "reputation": 0,
+    "last_award_date": "2026-02-11"
+  },
+  "WarmPine": {
+    "coins": 13,
+    "reputation": 0,
+    "last_award_date": "2026-02-11"
+  },
+  "FunnyLantern": {
+    "coins": 13,
+    "reputation": 0,
+    "last_award_date": "2026-02-11"
+  },
+  "WarmRiver": {
+    "coins": 13,
+    "reputation": 0,
+    "last_award_date": "2026-02-11"
+  },
+  "FunnyPine": {
+    "coins": 13,
+    "reputation": 0,
+    "last_award_date": "2026-02-11"
+  },
+  "CalmPine": {
+    "coins": 13,
+    "reputation": 0,
+    "last_award_date": "2026-02-11"
+  },
+  "FunnyFox": {
+    "coins": 13,
+    "reputation": 0,
+    "last_award_date": "2026-02-11"
+  },
+  "SoftRiver": {
+    "coins": 13,
+    "reputation": 0,
+    "last_award_date": "2026-02-11"
+  },
+  "HappyCloud": {
+    "coins": 13,
+    "reputation": 0,
+    "last_award_date": "2026-02-11"
+  },
+  "QuietForest": {
+    "coins": 13,
+    "reputation": 0,
+    "last_award_date": "2026-02-11"
+  },
+  "GentleForest": {
+    "coins": 1,
+    "reputation": 1,
+    "last_award_date": "2026-02-11"
+  },
+  "GentleRiver": {
+    "coins": 13,
+    "reputation": 0,
+    "last_award_date": "2026-02-11"
+  }
+}
