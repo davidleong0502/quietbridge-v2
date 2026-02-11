@@ -197,11 +197,12 @@ def render_connect4_page(SHARED: dict, me: str, display_name_fn):
     _ensure_game_keys(SHARED)
     _prune_lobby(SHARED)
     
-    # If I'm in lobby, refresh my heartbeat
+    # Always auto-rerun so lobby updates in real time
+    _auto_rerun_every(AUTO_RERUN_EVERY)
+    
+    # If I'm in lobby, refresh heartbeat
     if _in_lobby(SHARED, me):
         _touch_lobby(SHARED, me)
-        _auto_rerun_every(AUTO_RERUN_EVERY)
-
 
     st.subheader("Connect Four")
     st.caption("Join the lobby to be matched. Winner +10 🏆, loser −4 🏆.")
