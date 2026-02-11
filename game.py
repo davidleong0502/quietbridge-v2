@@ -16,10 +16,12 @@ EMPTY, P1, P2 = 0, 1, 2
 TOK = {EMPTY: "⚪", P1: "🔴", P2: "🟡"}
 
 def _ensure_game_keys(SHARED: dict):
-    SHARED.setdefault("lobby", {})          # user -> last_seen_ts
-    SHARED.setdefault("matches", [])        # {id,a,b,time}
-    SHARED.setdefault("match_of", {})       # user -> match_id
-    SHARED.setdefault("games", {})          # match_id -> game_state
+    if not isinstance(SHARED.get("lobby"), dict):
+        SHARED["lobby"] = {}
+
+    SHARED.setdefault("matches", [])
+    SHARED.setdefault("match_of", {})
+    SHARED.setdefault("games", {})
 
 def _new_match_id() -> str:
     return f"m_{int(time.time()*1000)}_{random.randint(1000,9999)}"
