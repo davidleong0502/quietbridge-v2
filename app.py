@@ -111,6 +111,15 @@ st.markdown(
   --qb-muted: rgba(17,17,17,0.70);
   --qb-sidebar: rgba(255,255,255,0.55);
   --qb-button-radius: 14px;
+
+  --qb-card-bg: rgba(255,255,255,0.92);
+  --qb-card-border: rgba(10,30,60,0.08);
+  --qb-card-shadow: rgba(15, 30, 60, 0.10);
+  --qb-pill-bg: rgba(234,244,255,0.90);
+  --qb-pill-border: rgba(10,30,60,0.08);
+
+
+
 }
 
 /* ---------- If OS is dark mode ---------- */
@@ -120,8 +129,15 @@ st.markdown(
     --qb-text: #f5f5f5;
     --qb-muted: rgba(245,245,245,0.72);
     --qb-sidebar: rgba(15, 23, 42, 0.70);
+
+    --qb-card-bg: rgba(15, 23, 42, 0.85);
+    --qb-card-border: rgba(148, 163, 184, 0.18);
+    --qb-card-shadow: rgba(0, 0, 0, 0.35);
+    --qb-pill-bg: rgba(2, 6, 23, 0.35);
+    --qb-pill-border: rgba(148, 163, 184, 0.18);
   }
 }
+
 
 /* ---------- Apply background + text ---------- */
 .stApp {
@@ -176,6 +192,12 @@ div.stButton > button {
 small, .stCaption {
   color: var(--qb-muted) !important;
 }
+
+/* FORCE streak card to follow theme text */
+.qb-card, .qb-card *{
+  color: var(--qb-text) !important;
+}
+
 </style>
 """,
     unsafe_allow_html=True,
