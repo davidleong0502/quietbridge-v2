@@ -249,7 +249,7 @@ if page == "🏠 Home":
     st.caption("Tap a word. First instinct is fine.")
 
 
-   def pick_word(word: str):
+    def pick_word(word: str):
     st.session_state.selected_word = word
     st.session_state.selected_mode = word  # use the word directly
 
