@@ -175,30 +175,12 @@ def _render_score(wallets, a: str, b: str, display_name_fn):
         st.write(f"🏆 Trophies: **{tb}**")
         st.write("🟡 Token")
         
-def _auto_rerun_every(seconds: int):
-    """
-    Streamlit has no real background timer; this forces periodic reruns
-    so AFK can be detected while users are sitting on the page.
-    """
-    if seconds <= 0:
-        return
-    st.markdown(
-        f"""
-        <script>
-        setTimeout(function() {{
-          window.parent.postMessage({{type: 'streamlit:rerun'}}, '*');
-        }}, {seconds * 1000});
-        </script>
-        """,
-        unsafe_allow_html=True,
-    )
 
 def render_connect4_page(SHARED: dict, me: str, display_name_fn):
     _ensure_game_keys(SHARED)
     _prune_lobby(SHARED)
-    
-    # Always auto-rerun so lobby updates in real time
-    _auto_rerun_every(AUTO_RERUN_EVERY)
+    st_autorefresh(interval=AUTO_RERUN_EVERY * 1000, key="connect4_refresh")
+
     
     # If I'm in lobby, refresh heartbeat
     if _in_lobby(SHARED, me):
